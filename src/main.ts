@@ -1,4 +1,4 @@
-import { Plugin, TFile } from "obsidian";
+import { MarkdownView, Plugin, TFile } from "obsidian";
 import { shouldPin } from "./rules";
 import { AutoPinSettingTab } from "./settings";
 import { AutoPinSettings, DEFAULT_SETTINGS, PinnableLeaf } from "./types";
@@ -14,7 +14,8 @@ export default class AutoPinPlugin extends Plugin {
         if (!file) return;
         if (!shouldPin(this.app, file, this.settings.rules)) return;
 
-        const leaf = this.app.workspace.activeLeaf as PinnableLeaf | null;
+        const leaf = this.app.workspace.getActiveViewOfType(MarkdownView)
+          ?.leaf as PinnableLeaf | undefined;
         if (leaf && !leaf.pinned) {
           leaf.setPinned(true);
         }

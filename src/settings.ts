@@ -78,7 +78,7 @@ export class AutoPinSettingTab extends PluginSettingTab {
   }
 
   private renderRule(containerEl: HTMLElement, rule: PinRule, index: number): void {
-    const header = new Setting(containerEl)
+    new Setting(containerEl)
       .setName(RULE_TYPE_LABELS[rule.type])
       .setDesc(RULE_TYPE_DESCRIPTIONS[rule.type])
       .addToggle((toggle) => {
@@ -97,8 +97,6 @@ export class AutoPinSettingTab extends PluginSettingTab {
             this.display();
           });
       });
-
-    header.settingEl.addClass("auto-pin-rule-header");
 
     switch (rule.type) {
       case RuleType.PathPattern:
