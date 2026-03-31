@@ -5,6 +5,6 @@
   "minAppVersion": "1.0.0",
   "description": "Automatically pin tabs based on configurable rules: path patterns, today's daily note, frontmatter properties, or exact file paths.",
   "author": "Sam Wildman",
-  "authorUrl": "https://github.com/samwildman",
-  "isDesktopOnly": false
+  "authorUrl": "https://github.com/SrWildman",
+  "isDesktopOnly": true
 }
