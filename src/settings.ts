@@ -49,6 +49,8 @@ export class AutoPinSettingTab extends PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
 
+    let selectedType = RuleType.DailyNote;
+
     new Setting(containerEl)
       .setName("Add rule")
       .setDesc("Add a new auto-pin rule.")
@@ -56,14 +58,13 @@ export class AutoPinSettingTab extends PluginSettingTab {
         for (const type of Object.values(RuleType)) {
           dropdown.addOption(type, RULE_TYPE_LABELS[type]);
         }
+        dropdown.onChange((value: string) => {
+          selectedType = value as RuleType;
+        });
       })
       .addButton((button) => {
         button.setButtonText("Add").onClick(async () => {
-          const select = containerEl.querySelector(
-            ".setting-item:first-child select"
-          ) as HTMLSelectElement | null;
-          const type = (select?.value ?? RuleType.DailyNote) as RuleType;
-          this.plugin.settings.rules.push(createDefaultRule(type));
+          this.plugin.settings.rules.push(createDefaultRule(selectedType));
           await this.plugin.saveSettings();
           this.display();
         });
@@ -114,7 +115,7 @@ export class AutoPinSettingTab extends PluginSettingTab {
       case RuleType.ExactPath:
         new Setting(containerEl).setName("File path").addText((text) => {
           text
-            .setPlaceholder("TODO.md")
+            .setPlaceholder("Todo.md")
             .setValue(rule.path ?? "")
             .onChange(async (value) => {
               rule.path = value;
@@ -126,7 +127,7 @@ export class AutoPinSettingTab extends PluginSettingTab {
       case RuleType.Frontmatter:
         new Setting(containerEl).setName("Property").addText((text) => {
           text
-            .setPlaceholder("pinned")
+            .setPlaceholder("Pinned")
             .setValue(rule.property ?? "")
             .onChange(async (value) => {
               rule.property = value;
@@ -138,7 +139,7 @@ export class AutoPinSettingTab extends PluginSettingTab {
           .setDesc("Leave empty to match any value.")
           .addText((text) => {
             text
-              .setPlaceholder("true")
+              .setPlaceholder("True")
               .setValue(rule.value ?? "")
               .onChange(async (value) => {
                 rule.value = value;
